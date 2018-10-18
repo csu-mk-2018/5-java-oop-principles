@@ -143,7 +143,7 @@ public class Tests {
                 Pattern p = Pattern.compile("\\[([^]]+)\\] \\d{4}\\.\\d{2}\\.\\d{2} \\d{2}:\\d{2}:\\d{2}[^ ]+ (.*) - (.*)");
                 Matcher m = p.matcher(message);
                 if (!m.matches()) {
-                    throw new AssertionError("Сообщение не соответсвует ожидаемому шаблону: [ERROR] YYYY.MM.DD hh:mm:ss test - test message");
+                    throw new AssertionError("Сообщение не соответсвует ожидаемому шаблону:\n[ERROR] YYYY.MM.DD hh:mm:ss test - test message\n"+message);
                 }
                 String level = m.group(1);
                 String loggerName = m.group(2);
