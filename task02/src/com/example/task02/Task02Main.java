@@ -11,11 +11,23 @@ public class Task02Main {
 
     public static void main(String[] args) {
         Bill bill = new Bill();
-        bill.add(ITEM1, 10);
+        bill.add(ITEM1, 1);
+        bill.add(ITEM2, 2);
         bill.add(ITEM3, 3);
-        bill.add(ITEM6, 1);
-        System.out.println(bill);
-        bill.add(ITEM3, 3);
-        System.out.println(bill);
+        bill.add(ITEM4, 4);
+        bill.add(ITEM5, 5);
+        bill.add(ITEM6, 6);
+
+        System.out.println(bill + "\n");
+
+        DiscountBill discountBill = new DiscountBill(14);
+        discountBill.add(ITEM1, 1);
+        discountBill.add(ITEM2, 2);
+        discountBill.add(ITEM3, 3);
+        discountBill.add(ITEM4, 4);
+        discountBill.add(ITEM5, 5);
+        discountBill.add(ITEM6, 6);
+
+        System.out.println(discountBill);
     }
 }
