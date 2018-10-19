@@ -11,11 +11,18 @@ public class Task02Main {
 
     public static void main(String[] args) {
         Bill bill = new Bill();
-        bill.add(ITEM1, 10);
+        bill.add(ITEM1, 5);
         bill.add(ITEM3, 3);
         bill.add(ITEM6, 1);
         System.out.println(bill);
-        bill.add(ITEM3, 3);
-        System.out.println(bill);
+
+        DiscountBill dbill = new DiscountBill();
+        dbill.setDiscount(10);
+        dbill.add(ITEM1, 5);
+        dbill.add(ITEM3, 3);
+        dbill.add(ITEM6, 1);
+        System.out.println(dbill);
+        System.out.println("Скидка в процентах равна: " + dbill.getDiscount());
+        System.out.println("Скидка в валюте равна: " + dbill.getAbsoluteDiscount());
     }
 }
