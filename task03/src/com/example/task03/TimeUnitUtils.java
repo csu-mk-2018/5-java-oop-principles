@@ -24,4 +24,26 @@ public class TimeUnitUtils {
     public static Seconds toSeconds(Milliseconds millis) {
         return new Seconds(millis.toSeconds());
     }
+
+    /**
+     * Конвертирует интервал в секундах в интервал в минутах
+     *
+     * @param millis интервал в секундах
+     * @return интервал в минутах
+     */
+    public static Minutes toMinutes(Milliseconds millis) {
+        return new Minutes(millis.toMinutes());
+    }
+
+    /**
+     * Конвертирует интервал в милнутах в интервал в секундах
+     *
+     * @param millis интервал в минутах
+     * @return интервал в секундах
+     */
+    public static Hours toHours(Milliseconds millis) {
+        return new Hours(millis.toHours());
+    }
+
+
 }
