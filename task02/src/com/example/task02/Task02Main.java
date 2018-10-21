@@ -17,5 +17,14 @@ public class Task02Main {
         System.out.println(bill);
         bill.add(ITEM3, 3);
         System.out.println(bill);
+        DiscountBill discountBill = new DiscountBill();
+        discountBill.add(ITEM1, 10);
+        discountBill.add(ITEM3, 3);
+        discountBill.add(ITEM6, 1);
+        discountBill.setDiscount(10); //10% скидка
+        System.out.println(discountBill);
+        discountBill.add(ITEM3, 3);
+        System.out.println(discountBill);
+
     }
 }
