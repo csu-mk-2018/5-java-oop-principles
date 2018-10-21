@@ -89,7 +89,7 @@ public class Logger {
             if (i.getName().equals(name))
                 return i;
         }
-        return null;
+        return new Logger(name);
     }
 
     public Level getLevel() {
