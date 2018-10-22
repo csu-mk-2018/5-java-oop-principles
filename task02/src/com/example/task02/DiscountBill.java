@@ -33,6 +33,6 @@ public class DiscountBill extends Bill {
     @Override
     public long getPrice() {
         long currentPrice = super.getPrice();
-        return (long)currentPrice - currentPrice * discount / 100;
+        return (long)(currentPrice - currentPrice * discount / 100);
     }
 }
