@@ -5,167 +5,100 @@ import java.text.*;
 
 public class Logger {
     private String name;
-    private int level;
+    private Level level;
 
-    private static ArrayList<Logger> loggers = new ArrayList<>();
-    private ArrayList<String> messages = new ArrayList<>();
+    private static Map<String, Level> loggers = new HashMap<>();
 
-    private String levels[] = {"debug", "info", "warning", "error"};
-
-
+    public enum Level { DEBUG, INFO, WARNING, ERROR;
+        @Override
+        public String toString() {
+            switch (this) {
+                case DEBUG: return "DEBUG";
+                case INFO: return "INFO";
+                case WARNING: return "WARNING";
+                case ERROR: return "ERROR";
+                default: return super.toString();
+            }
+        }
+        public int toInt() {
+            switch (this) {
+                case DEBUG: return 0;
+                case INFO: return 1;
+                case WARNING: return 2;
+                case ERROR: return 3;
+                default: return -1;
+            }
+        }
+    }
+    
     Logger(String name) {
         this.name = name;
-        this.level = 0;
-        loggers.add(this);
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return this.name;
+        this.level = Level.DEBUG;
+        loggers.put(this.name, this.level);
     }
 
     public static Logger getLogger(String name) {
-        for (Logger i : loggers) {
-            if (i.getName() == name) {
-                return i;
-            }
+        if(loggers.containsKey(name)) {
+            loggers.remove(name);
         }
         return new Logger(name);
     }
 
-    public void setLevel(String level) {
-        int checkSetLevel=0;
-        for (int i = 0; i < levels.length; i++) {
-            if (levels[i] == level)
-                this.level = i;
-            else
-                checkSetLevel++;
+    public void log(Level level, String message) {
+        if (checkLevel(level)) {
+            printLog(level, message);
         }
-        if(checkSetLevel==levels.length)
-            System.out.println("Невозможно задать логгеру уровень важности: " + level);
     }
-
-    public int getLevel() {
-        return this.level;
+    public void log(Level level, String format, Object... varargs) {
+        if (checkLevel(level)) {
+            printLog(level, String.format(format, varargs));
+        }
     }
-
     public void debug(String message) {
-        if (this.level == 0) {
-            Date dateNow = new Date();
-            SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss");
-            String mes = "[DEBUG] " + formatForDateNow.format(dateNow) + " " + this.name + " - " + message;
-            System.out.println(mes);
-            //messages.add(mes);
+        if (checkLevel(Level.DEBUG)) {
+            printLog(Level.DEBUG, message);
         }
     }
-
-    public void debug(String format, Object... message) {
-        if (this.level == 0) {
-            Date dateNow = new Date();
-            SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss");
-            String mes = "[DEBUG] " + formatForDateNow.format(dateNow) + " " + this.name + " - " + String.format(format, message);
-            System.out.println(mes);
-            //messages.add(mes);
+    public void debug(String format, Object... varargs) {
+        if (checkLevel(Level.DEBUG)) {
+            printLog(Level.DEBUG, String.format(format, varargs));
         }
     }
-
     public void info(String message) {
-        if (this.level < 2) {
-            Date dateNow = new Date();
-            SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss");
-            String mes = "[INFO] " + formatForDateNow.format(dateNow) + " " + this.name + " - " + message;
-            System.out.println(mes);
-            //messages.add(mes);
+        if (checkLevel(Level.INFO)) {
+            printLog(Level.INFO, message);
         }
     }
-
-    public void info(String format, Object... message) {
-        if (this.level < 2) {
-            Date dateNow = new Date();
-            SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss");
-            String mes = "[INFO] " + formatForDateNow.format(dateNow) + " " + this.name + " - " + String.format(format, message);
-            System.out.println(mes);
-            //messages.add(mes);
+    public void info(String format, Object... varargs) {
+        if (checkLevel(Level.INFO)) {
+            printLog(Level.INFO, String.format(format, varargs));
         }
     }
-
     public void warning(String message) {
-        if (this.level < 3) {
-            Date dateNow = new Date();
-            SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss");
-            String mes = "[WARNING] " + formatForDateNow.format(dateNow) + " " + this.name + " - " + message;
-            System.out.println(mes);
-            //messages.add(mes);
+        if (checkLevel(Level.WARNING)) {
+            printLog(Level.WARNING, message);
         }
     }
-
-    public void warning(String format, Object... message) {
-        if (this.level < 3) {
-            Date dateNow = new Date();
-            SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss");
-            String mes = "[WARNING] " + formatForDateNow.format(dateNow) + " " + this.name + " - " + String.format(format, message);
-            System.out.println(mes);
-            messages.add(mes);
+    public void warning(String format, Object... varargs) {
+        if (checkLevel(Level.WARNING)) {
+            printLog(Level.WARNING, String.format(format, varargs));
         }
     }
-
     public void error(String message) {
-        Date dateNow = new Date();
-        SimpleDateFormat formatForDateNow = new SimpleDateFormat("YYYY.MM.dd hh:mm:ss");
-        String mes = " [ERROR] " + formatForDateNow.format(dateNow) + " " + this.name + " - " + message;
-        System.out.println(mes.trim());
-        messages.add(mes);
+        printLog(Level.ERROR, message);
     }
-
-    public void error(String format, Object... message) {
-        Date dateNow = new Date();
-        SimpleDateFormat formatForDateNow = new SimpleDateFormat("YYYY.MM.dd hh:mm:ss");
-        String mes = " [ERROR] " + formatForDateNow.format(dateNow) + " " + this.name + " - " + String.format(format, message);
-        System.out.println(mes.trim());
-        messages.add(mes);
+    public void error(String format, Object... varargs) {
+        printLog(Level.ERROR, String.format(format, varargs));
     }
-
-    public String log(String level, String message) {
-        int levelOfLog = 100;
-        for (int i = 0; i < levels.length; i++) {
-            if (levels[i] == level) {
-                levelOfLog = i;
-            }
-        }
-        if (this.level <= levelOfLog) {
-            Date dateNow = new Date();
-            SimpleDateFormat formatForDateNow = new SimpleDateFormat("YYYY.MM.dd hh:mm:ss");
-            String mes = " [" + level.toUpperCase() + "]" + " " + formatForDateNow.format(dateNow) + " " + this.name + " - " + message;
-            System.out.println(mes.trim());
-            return mes;
-        }
-        return null;
+    private void printLog(Level level, String message) {
+        String dateStr = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss").format(new Date());
+        System.out.println(String.format("[%s] %s %s - %s", level, dateStr, name, message));
     }
-
-    public String log(String level, String format, Object... message) {
-        int levelOfLog = 100;
-        for (int i = 0; i < levels.length; i++) {
-            if (levels[i] == level)
-                levelOfLog = i;
-        }
-        if (this.level >= levelOfLog) {
-            Date dateNow = new Date();
-            SimpleDateFormat formatForDateNow = new SimpleDateFormat("YYYY.MM.dd hh:mm:ss");
-            String mes = " [" + level.toUpperCase() + "] " + formatForDateNow.format(dateNow) + " " + this.name + " - " + String.format(format, message);
-            System.out.println(mes);
-            messages.add(mes.trim());
-            return mes;
-        }
-        return null;
+    private boolean checkLevel(Level level) {
+        return level.toInt() >= this.level.toInt();
     }
-
-    public void printAllLogs() {
-        for (String i : this.messages
-                ) {
-            System.out.println(i);
-        }
-    }
+    public Level getLevel() { return level; }
+    public void setLevel(Level level) { this.level = level; }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 }
