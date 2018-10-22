@@ -8,10 +8,7 @@ public class Logger {
     private String name;
     private ImportanceLevel impLevel = ImportanceLevel.DEBUG;
 
-    private static ArrayList<Logger> loggers = new ArrayList<Logger>();
-
-    private Logger() {
-    }
+    private static HashMap<String, Logger> loggers = new HashMap<>();
 
     private Logger(String name) {
         this.name = name;
@@ -19,23 +16,13 @@ public class Logger {
 
     private static Logger createNewLogger(String name) {
         Logger newLogger = new Logger(name);
-        loggers.add(newLogger);
+        loggers.put(name, newLogger);
         return newLogger;
     }
 
     public static Logger getLogger(String name) {
-
-        if (loggers.isEmpty()) {
-            return createNewLogger(name);
-        }
-
-        for (Logger logger : loggers) {
-            if (name.equals(logger.name)) {
-                return logger;
-            }
-        }
-
-        return createNewLogger(name);
+        Logger logger = loggers.get(name);
+        return logger == null ? createNewLogger(name) : logger;
     }
 
     public String getName() {
@@ -43,7 +30,9 @@ public class Logger {
     }
 
     public void setName(String name) {
+        loggers.remove(name);
         this.name = name;
+        loggers.put(name, this);
     }
 
     private static String getNowDateFormat() {
@@ -122,11 +111,11 @@ public class Logger {
         }
     }
 
-    ImportanceLevel getLevel() {
+    public ImportanceLevel getLevel() {
         return impLevel;
     }
 
-    void setLevel(ImportanceLevel impLevel) {
+    public void setLevel(ImportanceLevel impLevel) {
         this.impLevel = impLevel;
     }
 
