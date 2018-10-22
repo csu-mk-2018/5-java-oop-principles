@@ -9,10 +9,16 @@ public class DiscountBill extends Bill {
     }
 
     public DiscountBill(int discount) {
+        if (discount < 0 || discount > 100) {
+            throw new IllegalArgumentException(String.format("Некорректное значение скидки %d", discount));
+        }
         this.discount = discount;
     }
 
     public void setDiscount(int discount) {
+        if (discount < 0 || discount > 100) {
+            throw new IllegalArgumentException(String.format("Некорректное значение скидки %d", discount));
+        }
         this.discount = discount;
     }
 
@@ -26,6 +32,7 @@ public class DiscountBill extends Bill {
 
     @Override
     public long getPrice() {
-        return super.getPrice() - super.getPrice() * discount / 100;
+        long currentPrice = super.getPrice();
+        return (long)currentPrice - currentPrice * discount / 100;
     }
 }
