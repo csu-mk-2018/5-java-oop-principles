@@ -2,25 +2,25 @@ package com.example.task01;
 
 public class Task01Main {
     public static void main(String[] args) {
-        Logger logger0 = new Logger("test1");
+
         Logger logger1 = Logger.getLogger("test1");
         Logger logger2 = Logger.getLogger("test1");
         System.out.println(logger1 == logger2);
 
-        logger0.debug("some message 1");
-        logger0.info("some message 1");
-        logger0.warning("some message 1");
-        logger0.error("some message 1");
+        logger1.debug("some message 1");
+        logger1.info("some message 1");
+        logger1.warning("some message 1");
+        logger1.error("some message 1");
 
-        System.out.println(logger0.getLevel());
-        logger0.setLevel("warning");
+        System.out.println(logger1.getLevel());
+        logger1.setLevel(Logger.Level.WARNING);
 
-        logger0.debug("some message 2");
-        logger0.info("some message 2");
-        logger0.warning("some message 2");
-        logger0.error("some message 2");
+        logger1.debug("some message 2");
+        logger1.info("some message 2");
+        logger1.warning("some message 2");
+        logger1.error("some message 2");
 
-        logger1.log("ERROR", "log error");
-        logger2.log("error", "0x%x: %s", 0x1223, "log debug");
+        logger1.log(Logger.Level.ERROR, "log error");
+        logger2.log(Logger.Level.ERROR, "0x%x: %s", 0x1223, "log debug");
     }
 }
