@@ -17,7 +17,7 @@ public class Logger {
         ERROR,
     }
 
-    Logger(String name) {
+    private Logger(String name) {
         this.name = name;
         loggers.put(this.name, this);
     }
