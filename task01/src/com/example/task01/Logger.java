@@ -42,12 +42,7 @@ public class Logger {
     }
 
     private void printMessage(String message, ImportanceLevel impLevel) {
-        String printableMessage = "[" + impLevel.toString() + "] " + getNowDateFormat() + String.format(" %s - %s", name, message);
-        System.out.println(printableMessage);
-    }
-
-    private void printFormatMessage(String format, ImportanceLevel impLevel, Object... params) {
-        String printableMessage = "[" + impLevel.toString() + "] " + getNowDateFormat() + " " + name + " - " + String.format(format, params);
+        String printableMessage = "[" + impLevel.name() + "] " + getNowDateFormat() + String.format(" %s - %s", name, message);
         System.out.println(printableMessage);
     }
 
@@ -59,7 +54,7 @@ public class Logger {
 
     public void debug(String format, Object... params) {
         if (impLevel.ordinal() <= ImportanceLevel.DEBUG.ordinal()) {
-            printFormatMessage(format, ImportanceLevel.DEBUG, params);
+            printMessage(String.format(format, params), ImportanceLevel.DEBUG);
         }
     }
 
@@ -71,7 +66,7 @@ public class Logger {
 
     public void info(String format, Object... params) {
         if (impLevel.ordinal() <= ImportanceLevel.INFO.ordinal()) {
-            printFormatMessage(format, ImportanceLevel.INFO, params);
+            printMessage(String.format(format, params), ImportanceLevel.INFO);
         }
     }
 
@@ -83,7 +78,7 @@ public class Logger {
 
     public void warning(String format, Object... params) {
         if (impLevel.ordinal() <= ImportanceLevel.WARNING.ordinal()) {
-            printFormatMessage(format, ImportanceLevel.WARNING, params);
+            printMessage(String.format(format, params), ImportanceLevel.WARNING);
         }
     }
 
@@ -95,7 +90,7 @@ public class Logger {
 
     public void error(String format, Object... params) {
         if (impLevel.ordinal() <= ImportanceLevel.ERROR.ordinal()) {
-            printFormatMessage(format, ImportanceLevel.ERROR, params);
+            printMessage(String.format(format, params), ImportanceLevel.ERROR);
         }
     }
 
@@ -107,7 +102,7 @@ public class Logger {
 
     public void log(String format, ImportanceLevel impLevel, Object... params) {
         if (this.impLevel.ordinal() <= impLevel.ordinal()) {
-            printFormatMessage(format, impLevel, params);
+            printMessage(String.format(format, params), impLevel);
         }
     }
 
