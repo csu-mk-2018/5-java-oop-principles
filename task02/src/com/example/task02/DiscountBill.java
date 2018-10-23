@@ -8,7 +8,7 @@ public class DiscountBill extends Bill {
     /**
      * Скидка в процентах
      */
-    private int discount;
+    private int discount = 0;
 
     /**
      * Возвращает процент скидки
@@ -47,7 +47,7 @@ public class DiscountBill extends Bill {
         if (discount == 0) {
             return super.toString();
         } else {
-            return super.toString() + " (с учётом скидки)\nСкидка: " + discount + "%";
+            return super.toString() + " (с учётом скидки " + discount + "%)";
         }
     }
 }
