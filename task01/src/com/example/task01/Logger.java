@@ -30,7 +30,7 @@ public class Logger {
             }
         }
     }
-    
+
     Logger(String name) {
         this.name = name;
         this.level = Level.DEBUG;
