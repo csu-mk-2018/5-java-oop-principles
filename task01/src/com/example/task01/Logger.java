@@ -7,41 +7,18 @@ public class Logger {
     private String name;
     private Level level;
 
-    private static Map<String, Level> loggers = new HashMap<>();
+    private static Map<String, Logger> loggers = new HashMap<>();
 
-    public enum Level { DEBUG, INFO, WARNING, ERROR;
-        @Override
-        public String toString() {
-            switch (this) {
-                case DEBUG: return "DEBUG";
-                case INFO: return "INFO";
-                case WARNING: return "WARNING";
-                case ERROR: return "ERROR";
-                default: return super.toString();
-            }
-        }
-        public int toInt() {
-            switch (this) {
-                case DEBUG: return 0;
-                case INFO: return 1;
-                case WARNING: return 2;
-                case ERROR: return 3;
-                default: return -1;
-            }
-        }
-    }
+    public enum Level { DEBUG, INFO, WARNING, ERROR}
 
     Logger(String name) {
         this.name = name;
         this.level = Level.DEBUG;
-        loggers.put(this.name, this.level);
+        loggers.put(this.name, this);
     }
 
     public static Logger getLogger(String name) {
-        if(loggers.containsKey(name)) {
-            loggers.remove(name);
-        }
-        return new Logger(name);
+        return loggers.get(name)==null ? new Logger(name) : loggers.get(name);
     }
 
     public void log(Level level, String message) {
@@ -95,7 +72,7 @@ public class Logger {
         System.out.println(String.format("[%s] %s %s - %s", level, dateStr, name, message));
     }
     private boolean checkLevel(Level level) {
-        return level.toInt() >= this.level.toInt();
+        return level.ordinal() >= this.level.ordinal();
     }
     public Level getLevel() { return level; }
     public void setLevel(Level level) { this.level = level; }
