@@ -6,9 +6,9 @@ public class MemoryHandler implements MessageHandler {
 
     private ArrayList<String> bufferedMessages = new ArrayList<>();
 
-    private MessageHandler handler;
+    private final MessageHandler handler;
 
-    private int bufCapacity;
+    private final int bufCapacity;
 
     public MemoryHandler(int bufCapacity, MessageHandler handler) {
         if (bufCapacity < 0 || handler == null) {

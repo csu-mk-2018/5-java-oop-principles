@@ -26,7 +26,7 @@ public class RotationFileHandler implements MessageHandler {
         date = date.truncatedTo(interval);
         if (writer == null || !currentTime.equals(date)) {
             String curFileName = fileName + "_"
-                    + date.format(DateTimeFormatter.ofPattern(filePattern)) + ".log";
+                    + date.format(DateTimeFormatter.ofPattern(filePattern));
             try {
 
                 if (writer != null) {

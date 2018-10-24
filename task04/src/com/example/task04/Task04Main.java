@@ -7,6 +7,9 @@ public class Task04Main {
         Logger logger = Logger.getLogger("log1", new ConsoleHandler());
         logger.log("message 1!!", ImportanceLevel.DEBUG);
 
+        logger.addHandler(new ConsoleHandler());
+        logger.log("message 1!!", ImportanceLevel.DEBUG);
+
         Logger fileLogger = Logger.getLogger("log2", new FileHandler("C:/data_logs/log_file.txt"));
         fileLogger.log("message 2!!", ImportanceLevel.DEBUG);
         fileLogger.log("Error occured, check!", ImportanceLevel.ERROR);
