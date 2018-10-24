@@ -7,7 +7,7 @@ import java.util.List;
  * Счет к оплате
  */
 public class Bill {
-    protected List<BillItem> items = new ArrayList<>();
+    private List<BillItem> items = new ArrayList<>();
 
     /**
      * Добавляет товар в корзину
