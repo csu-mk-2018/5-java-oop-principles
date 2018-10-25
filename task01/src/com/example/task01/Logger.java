@@ -1,37 +1,16 @@
 package com.example.task01;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 public class Logger {
     private Level level;
-    private String name;
+    private final String name;
 
-    public enum Level { DEBUG, INFO, WARNING, ERROR;
-        @Override
-        public String toString() {
-            switch (this) {
-                case DEBUG: return "DEBUG";
-                case INFO: return "INFO";
-                case WARNING: return "WARNING";
-                case ERROR: return "ERROR";
-                default: return super.toString();
-            }
-        }
+    public enum Level { DEBUG, INFO, WARNING, ERROR }
 
-        public int toInt() {
-            switch (this) {
-                case DEBUG: return 0;
-                case INFO: return 1;
-                case WARNING: return 2;
-                case ERROR: return 3;
-                default: return -1;
-            }
-        }
-    }
-
-    private static ArrayList<Logger> loggers = new ArrayList();
+    private static HashMap<String, Logger> loggers = new HashMap();
 
     public Logger(String name) {
         this.name = name;
@@ -43,24 +22,14 @@ public class Logger {
         this.level = level;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj instanceof Logger) {
-            return this.name.equals(((Logger) obj).getName()) && this.level == ((Logger) obj).getLevel();
-        } else {
-            return false;
-        }
-    }
-
     public static Logger getLogger(String name) {
-        Logger logger = new Logger(name);
-        if (loggers.contains(logger)) {
-            return loggers.get(loggers.indexOf(logger));
+        if (loggers.containsKey(name)) {
+            return loggers.get(name);
         } else {
-            loggers.add(logger);
+            Logger logger = new Logger(name);
+            loggers.put(name, logger);
+            return logger;
         }
-        return logger;
     }
 
     public void log(Level level, String message) {
@@ -125,11 +94,10 @@ public class Logger {
     }
 
     private boolean checkLevel(Level level) {
-        return level.toInt() >= this.level.toInt();
+        return level.ordinal() >= this.level.ordinal();
     }
 
     public Level getLevel() { return level; }
     public void setLevel(Level level) { this.level = level; }
     public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
 }
