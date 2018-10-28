@@ -8,7 +8,7 @@ public class Logger {
 
     private final String name;
     private Level level;
-    private Handler handler;
+    private ArrayList<MessageHandler> handlers = new ArrayList<>();
     private static Map<String, Logger> loggers = new HashMap<String, Logger>();
 
     public enum Level {
@@ -18,38 +18,13 @@ public class Logger {
         ERROR
     }
 
-    public enum Handler {
-        CONSOLE,
-        FILE,
-        ROTATIONFILE,
-        MEMORY;
-
-        public void write(String message) {
-            switch (this) {
-                case CONSOLE:
-                    ConsoleHandler console = new ConsoleHandler();
-                    console.sendMessage(message);
-                    break;
-                case FILE:
-                    //Здесь лучше бы хранить поля puth и append, чтобы пользователь
-                    //сам мог задать путь и флаг (дозапись или перезапись файла)
-                    //не могу придумать где хранить эти поля, в классе Logger явно нет
-                    FileHandler file = new FileHandler("log.txt");
-                    file.sendMessage(message, true);
-                    break;
-                case ROTATIONFILE:
-                    RotationFileHandler rotationFile = new RotationFileHandler();
-                    rotationFile.sendMessage(message);
-                    break;
-                case MEMORY:
-                    MemoryHandler memoryHandler = new MemoryHandler();
-                    memoryHandler.SendMessage(message);
-                    break;
-            }
-        }
+    private Logger(String name, MessageHandler handler) {
+        this.name = name;
+        loggers.put(this.name, this);
+        this.handlers.add(handler);
     }
 
-    public Logger(String name) {
+    private Logger(String name) {
         this.name = name;
         loggers.put(this.name, this);
     }
@@ -60,8 +35,15 @@ public class Logger {
         loggers.put(this.name, this);
     }
 
-    public void setHandler(Handler handler) {
-        this.handler = handler;
+    private Logger(String name, Level level, MessageHandler handler) {
+        this.name = name;
+        this.level = level;
+        loggers.put(this.name, this);
+        this.handlers.add(handler);
+    }
+
+    public void setHandler(MessageHandler handler) {
+        this.handlers.add(handler);
     }
 
     public void setLevel(Level level) {
@@ -122,13 +104,15 @@ public class Logger {
         logMessage(Level.ERROR, message);
     }
 
-    public void logMessage(Level level, String message) {
+    private void logMessage(Level level, String message) {
         //[WARNING] 2018.07.17 09:56:32 myLogger - something weird happened
         if (level != null && level.ordinal() >= this.level.ordinal()) {
             DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss");
             Date date = new Date();
             String log = String.format("[%s] %s %s - %s", level.toString(), dateFormat.format(date), name, message);
-            this.handler.write(log);
+            for (MessageHandler handler : handlers) {
+                handler.sendMessage(log);
+            }
         }
     }
 

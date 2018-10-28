@@ -4,7 +4,7 @@ import java.io.*;
 
 import java.io.FileWriter;
 
-public class FileHandler {
+public class FileHandler implements MessageHandler {
 
     private final String puthToFile;
 
@@ -13,16 +13,13 @@ public class FileHandler {
     }
 
     /*
-     Метод принимает первым параметром сообщение логгера,
-     вторым параметром - флаг, указывающий на перезапись или дозапись в конец файла
-     true = дозапись, false = перезапись файла
+    Метод выводит сообщение в файл
      */
-    public void sendMessage(String message, boolean append) {
+    public void sendMessage(String message) {
 
-        try (FileWriter writer = new FileWriter(puthToFile, append)) {
+        try (FileWriter writer = new FileWriter(puthToFile)) {
             writer.write(message);
             writer.flush();
-            writer.close();
         } catch (IOException ex) {
 
             System.out.println(ex.getMessage());

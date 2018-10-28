@@ -5,11 +5,9 @@ package com.example.task04;
  */
 public interface MessageHandler {
 
-    ConsoleHandler getConsoleHandler();
-
-    FileHandler getFileHandler();
-
-    RotationFileHandler getRotationFileHandler();
-
-    MemoryHandler getMemoryHandler();
+    /*
+    Метод выводит сообщения в файл или консоль, в зависимости от hadler'а
+    На вход принимает строку String
+     */
+    public void sendMessage(String message);
 }
