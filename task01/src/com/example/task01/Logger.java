@@ -68,12 +68,11 @@ public class Logger {
     }
 
     public static Logger getLogger(String name) {
-        for (String i : loggers.keySet()) {
-            if (i.equals(name)) {
-                return loggers.get(i);
-            }
+        Logger logger = loggers.get(name);
+        if (logger == null) {
+            logger = new Logger(name);
         }
-        return new Logger(name);
+        return logger;
     }
 
     public Level getLevel() {
