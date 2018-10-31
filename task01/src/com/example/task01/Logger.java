@@ -12,7 +12,7 @@ public class Logger {
         ERROR
     }
 
-    private String name;
+    private final String name;
     private Level impLevel = Level.DEBUG;
 
     private static HashMap<String, Logger> loggers = new HashMap<>();
@@ -43,7 +43,8 @@ public class Logger {
     }
 
     private void printMessage(String message, Level impLevel) {
-        String printableMessage = "[" + impLevel.name() + "] " + getNowDateFormat() + String.format(" %s - %s", name, message);
+        // printableMessage = "[" + impLevel.name() + "] " + getNowDateFormat() + String.format(" %s - %s", name, message);
+        String printableMessage = String.format("[%s] %s %s - %s", impLevel.name(), getNowDateFormat(), name, message);
         System.out.println(printableMessage);
     }
 
