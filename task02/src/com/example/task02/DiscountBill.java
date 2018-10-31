@@ -3,10 +3,6 @@ package com.example.task02;
 public class DiscountBill extends Bill {
     private int discount;
 
-    public DiscountBill() {
-        discount = 0;
-    }
-
     public DiscountBill(int sizeDiscount) {
         setDiscount(discount);
     }
@@ -19,7 +15,7 @@ public class DiscountBill extends Bill {
 
     @Override
     public long getPrice() {
-        return super.getPrice() - (long) (((double) discount / 100) * super.getPrice());
+        return super.getPrice() - getAbsoluteDiscount();
     }
 
     /**
