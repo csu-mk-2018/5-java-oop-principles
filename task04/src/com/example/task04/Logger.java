@@ -1,14 +1,23 @@
 package com.example.task04;
 
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.text.*;
 
+/**
+ * Класс Logger, который логгирует сообщения с различными уровнями важности.
+ */
 public class Logger {
     private final String name;
+    private final String lineSeparator = System.getProperty("line.separator");
     private Level level = Level.DEBUG;
     private static HashMap<String, Logger> loggers = new HashMap<>();
     private ArrayList<MessageHandler> handlers = new ArrayList<>();
 
+    /**
+     * Уровни важности сообщений.
+     */
     public static enum Level {
         DEBUG,
         INFO,
@@ -22,89 +31,156 @@ public class Logger {
         this.handlers.add(new ConsoleHandler());
     }
 
-    private Logger(String name, MessageHandler handler) {
-        this.name = name;
-        loggers.put(name, this);
-        this.handlers.add(handler);
-    }
-
+    /**
+     * Получение имени логгера.
+     *
+     * @return имя логгера
+     */
     public String getName() {
         return name;
     }
 
-    public void error(String msg) {
-        log(Level.ERROR, msg);
-    }
 
-    public void error(String format, Object... varargs) {
-        log(Level.ERROR, String.format(format, varargs));
-    }
-
-    public void warning(String msg) {
-        log(Level.WARNING, msg);
-    }
-
-    public void warning(String format, Object... varargs) {
-        log(Level.WARNING, String.format(format, varargs));
-    }
-
-    public void info(String msg) {
-        log(Level.INFO, msg);
-    }
-
-    public void info(String format, Object... varargs) {
-        log(Level.INFO, String.format(format, varargs));
-    }
-
-    public void debug(String msg) {
-        log(Level.DEBUG, msg);
-    }
-
-    public void debug(String format, Object... varargs) {
-        log(Level.DEBUG, String.format(format, varargs));
-    }
-
-    public void log(Level level, String message) {
-        if (level.ordinal() >= this.level.ordinal()) {
-            String dateNow = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss").format(new Date());
-            for (MessageHandler handler : handlers) {
-                handler.printMessage(String.format("[%s] %s %s - %s\r\n", level, dateNow, name, message));
-            }
-        }
-    }
-
-    public void log(Level level, String format, Object... varargs) {
-        log(level, String.format(format, varargs));
-    }
-
+    /**
+     * Возвращает логгер из списка логгеров либо создает и возвращает логгер, если его ещё не существует
+     *
+     * @param name имя логгера
+     * @return логгер
+     */
     public static Logger getLogger(String name) {
-        for (String i : loggers.keySet()) {
-            if (i.equals(name)) {
-                return loggers.get(i);
-            }
+        Logger logger = loggers.get(name);
+        if (logger == null) {
+            logger = new Logger(name);
         }
-        return new Logger(name);
+        return logger;
     }
 
-    public static Logger getLogger(String name, MessageHandler handler) {
-        for (String i : loggers.keySet()) {
-            if (i.equals(name)) {
-                return loggers.get(i);
-            }
-        }
-        return new Logger(name, handler);
-    }
-
+    /**
+     * Получение текущего уровня важности сообщений, сообщения с уровнем ниже данного не обрабатываются.
+     *
+     * @return уровень важности
+     */
     public Level getLevel() {
         return level;
     }
 
+    /**
+     * Установка уровня важности сообщений, сообщения с уровнем ниже этого обрабатываться не будут.
+     *
+     * @param level добавляемый обработчик
+     */
     public void setLevel(Level level) {
         this.level = level;
     }
 
+    /**
+     * Добавление обработчика в список обработчиков данного логгера.
+     *
+     * @param handler добавляемый обработчик
+     */
     public void addHandler(MessageHandler handler) {
         handlers.add(handler);
+    }
+
+    /**
+     * Отправить сообщение уровня важности ERROR в обработчик(и).
+     *
+     * @param msg текст сообщения
+     */
+    public void error(String msg) throws IOException {
+        log(Level.ERROR, msg);
+    }
+
+    /**
+     * Отправить сообщение уровня важности ERROR в обработчик(и).
+     *
+     * @param format  формат сообщения
+     * @param varargs параметры для формата
+     */
+    public void error(String format, Object... varargs) throws IOException {
+        log(Level.ERROR, String.format(format, varargs));
+    }
+
+    /**
+     * Отправить сообщение уровня важности WARNING в обработчик(и).
+     *
+     * @param msg текст сообщения
+     */
+    public void warning(String msg) throws IOException {
+        log(Level.WARNING, msg);
+    }
+
+    /**
+     * Отправить сообщение уровня важности WARNING в обработчик(и).
+     *
+     * @param format  формат сообщения
+     * @param varargs параметры для формата
+     */
+    public void warning(String format, Object... varargs) throws IOException {
+        log(Level.WARNING, String.format(format, varargs));
+    }
+
+    /**
+     * Отправить сообщение уровня важности INFO в обработчик(и).
+     *
+     * @param msg текст сообщения
+     */
+    public void info(String msg) throws IOException {
+        log(Level.INFO, msg);
+    }
+
+    /**
+     * Отправить сообщение уровня важности INFO в обработчик(и).
+     *
+     * @param format  формат сообщения
+     * @param varargs параметры для формата
+     */
+    public void info(String format, Object... varargs) throws IOException {
+        log(Level.INFO, String.format(format, varargs));
+    }
+
+    /**
+     * Отправить сообщение уровня важности DEBUG в обработчик(и).
+     *
+     * @param msg текст сообщения
+     */
+    public void debug(String msg) throws IOException {
+        log(Level.DEBUG, msg);
+    }
+
+    /**
+     * Отправить сообщение уровня важности DEBUG в обработчик(и).
+     *
+     * @param format  формат сообщения
+     * @param varargs параметры для формата
+     */
+    public void debug(String format, Object... varargs) throws IOException {
+        log(Level.DEBUG, String.format(format, varargs));
+    }
+
+    /**
+     * Отправить сообщение в обработчик(и).
+     *
+     * @param message текст сообщения
+     */
+    public void log(Level level, String message) throws IOException {
+        if (level.ordinal() >= this.level.ordinal()) {
+            String dateNow = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd hh:mm:ss"));
+            for (MessageHandler handler : handlers) {
+                handler.printMessage(String.format("[%s] %s %s - %s%s", level, dateNow, name, message, lineSeparator));
+            }
+        }
+    }
+
+    /**
+     * Отправить сообщение в обработчик(и).
+     *
+     * @param level   уровень важности
+     * @param format  формат сообщения
+     * @param varargs параметры для формата
+     */
+    public void log(Level level, String format, Object... varargs) throws IOException {
+        log(level, String.format(format, varargs));
     }
 
 }

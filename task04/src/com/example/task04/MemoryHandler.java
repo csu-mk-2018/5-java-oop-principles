@@ -1,13 +1,23 @@
 package com.example.task04;
 
+import java.io.IOException;
 import java.util.*;
 
+/**
+ * Обработчик для буферизации сообщений в памяти и передачи их другому обработчику
+ */
 public class MemoryHandler implements MessageHandler {
 
     private ArrayList<String> messages = new ArrayList<>();
-    MessageHandler handler;
-    private long limit;
+    private final MessageHandler handler;
+    private final long limit;
 
+    /**
+     * Конструктор MemoryHandler
+     *
+     * @param handler обработчик в который будут переданы сообщения
+     * @param limit   максимальное количество сообщений для буферизации
+     */
     public MemoryHandler(MessageHandler handler, long limit) {
         if (limit > 0 && handler != null) {
             this.handler = handler;
@@ -17,20 +27,21 @@ public class MemoryHandler implements MessageHandler {
         }
     }
 
-    private String concatMessages() {
-        String resMessage = "";
-        for (String msg : messages) {
-            resMessage += msg;
+    /**
+     * Передаёт все хранимые сообщения обработчику
+     */
+    public void flush() throws IOException {
+        for (String message : messages) {
+            handler.printMessage(message);
         }
-        return resMessage;
+        messages.clear();
     }
 
     @Override
-    public void printMessage(String message) {
+    public void printMessage(String message) throws IOException {
         messages.add(message);
         if (messages.size() == limit) {
-            handler.printMessage(this.concatMessages());
-            messages.clear();
+            this.flush();
         }
     }
 
