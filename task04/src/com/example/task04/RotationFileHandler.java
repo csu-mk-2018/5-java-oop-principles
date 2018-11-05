@@ -25,15 +25,20 @@ public class RotationFileHandler implements MessageHandler {
      * @param interval    временной интервал в формате {@link java.time.temporal.ChronoUnit}
      */
     public RotationFileHandler(String path, String datePattern, ChronoUnit interval) {
-        if (path != null && datePattern != null && interval != null) {
-            this.path = path;
-            this.datePattern = datePattern;
-            this.interval = interval;
-            this.lastTimeFileCreation = LocalDateTime.now().truncatedTo(interval);
-        } else {
-            throw new IllegalArgumentException();
+        if (path == null) {
+            throw new IllegalArgumentException("Ожидается String path, получен null");
+        }
+        if (datePattern == null) {
+            throw new IllegalArgumentException("Ожидается String datePattern, получен null");
+        }
+        if (interval == null) {
+            throw new IllegalArgumentException("Ожидается ChronoUnit interval, получен null");
         }
 
+        this.path = path;
+        this.datePattern = datePattern;
+        this.interval = interval;
+        this.lastTimeFileCreation = LocalDateTime.now().truncatedTo(interval);
     }
 
     @Override

@@ -16,15 +16,18 @@ public class MemoryHandler implements MessageHandler {
      * Конструктор MemoryHandler
      *
      * @param handler обработчик в который будут переданы сообщения
-     * @param limit   максимальное количество сообщений для буферизации
+     * @param limit   максимальное количество сообщений для буферизации (минимум 1)
      */
     public MemoryHandler(MessageHandler handler, long limit) {
-        if (limit > 0 && handler != null) {
-            this.handler = handler;
-            this.limit = limit;
-        } else {
-            throw new IllegalArgumentException();
+        if (limit < 1) {
+            throw new IllegalArgumentException("Limit не дожен быть меньше 1");
         }
+        if (handler == null) {
+            throw new IllegalArgumentException("Ожидается handler, получен null");
+        }
+        this.handler = handler;
+        this.limit = limit;
+
     }
 
     /**
