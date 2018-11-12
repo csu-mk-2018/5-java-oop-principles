@@ -6,11 +6,12 @@ import java.text.*;
 public class Logger {
     final private String name;
     private Level level;
+    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss");
     private static Map<String, Logger> loggers = new HashMap<>();
 
     public enum Level {DEBUG, INFO, WARNING, ERROR}
 
-    Logger(String name) {
+    private Logger(String name) {
         this.name = name;
         this.level = Level.DEBUG;
         loggers.put(this.name, this);
@@ -76,8 +77,6 @@ public class Logger {
     public void error(String format, Object... varargs) {
         printLog(Level.ERROR, String.format(format, varargs));
     }
-
-    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss");
 
     private void printLog(Level level, String message) {
         String dateStr = DATE_FORMAT.format(new Date());
