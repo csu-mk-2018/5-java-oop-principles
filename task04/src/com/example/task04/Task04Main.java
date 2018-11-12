@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 
 public class Task04Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         Logger logger1 = Logger.getLogger("test");
         logger1.setLevel(Logger.Level.DEBUG);
         logger1.setHandler(new ConsoleHandler());
@@ -12,7 +12,7 @@ public class Task04Main {
 
         Logger logger2 = Logger.getLogger("Error");
         logger2.setLevel(Logger.Level.ERROR);
-        logger2.setHandler(new MemoryHandler());
+        logger2.setHandler(new MemoryHandler(new ConsoleHandler(), 1));
         for (int i = 0; i < 15; i++) {
             logger2.error("errorMessage");
         }

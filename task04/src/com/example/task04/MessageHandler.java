@@ -5,9 +5,9 @@ package com.example.task04;
  */
 public interface MessageHandler {
 
-    /*
-    Метод выводит сообщения в файл или консоль, в зависимости от hadler'а
-    На вход принимает строку String
+    /**
+     * Выводит сообщения в файл или на консоль
+     * @param message выводимая строка
      */
-    public void sendMessage(String message);
+    public void sendMessage(String message) throws Exception;
 }

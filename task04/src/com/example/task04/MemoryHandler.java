@@ -6,35 +6,33 @@ public class MemoryHandler implements MessageHandler {
 
     private ArrayList<String> messages = new ArrayList<String>();
     private int limit;
+    private MessageHandler handler;
 
-    MemoryHandler() {
-        limit = 15;
-    }
-
-    MemoryHandler(int limit) {
+    /**
+     * Конструтор класса MemoryHandler
+     * @param handler текущий обработчик сообщений
+     * @param limit  лимит сообщений для вывода
+     */
+    public MemoryHandler(MessageHandler handler, int limit) {
+        this.handler = handler;
         this.limit = limit;
     }
 
-    /*
-    Добавляем сообщение в лист, если размера лист > лимита, выводим
-    все в хендлер
-     */
-    public void sendMessage(String message) {
-        messages.add(message);
+    public void sendMessage(String message) throws Exception {
+        this.messages.add(message);
 
-        if (messages.size() >= limit)
-            writeMessages(messages);
+        if (messages.size() == limit){
+            this.writeMessages();
+        }
     }
 
-    /*
-       Вспомогоательный метод, выводящий все сообщения из памяти в handler
-       На вход принимает list с сообщениями
-    */
-    private void writeMessages(ArrayList<String> messages) {
+    /**
+     * Вспомогательный метод для вывода сообщений в Handler'ы при достижении лимита
+     */
+    private void writeMessages() throws  Exception{
         for (String el : messages) {
-            System.out.println(el);
+           this.handler.sendMessage(el);
         }
-
         messages.clear();
     }
 }

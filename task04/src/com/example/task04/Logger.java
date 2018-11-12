@@ -10,6 +10,7 @@ public class Logger {
     private Level level;
     private ArrayList<MessageHandler> handlers = new ArrayList<>();
     private static Map<String, Logger> loggers = new HashMap<String, Logger>();
+    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss");
 
     public enum Level {
         DEBUG,
@@ -27,19 +28,6 @@ public class Logger {
     private Logger(String name) {
         this.name = name;
         loggers.put(this.name, this);
-    }
-
-    private Logger(String name, Level level) {
-        this.name = name;
-        this.level = level;
-        loggers.put(this.name, this);
-    }
-
-    private Logger(String name, Level level, MessageHandler handler) {
-        this.name = name;
-        this.level = level;
-        loggers.put(this.name, this);
-        this.handlers.add(handler);
     }
 
     public void setHandler(MessageHandler handler) {
@@ -68,48 +56,47 @@ public class Logger {
         return temp;
     }
 
-    public void debug(String message) {
+    public void debug(String message) throws Exception {
         logMessage(Level.DEBUG, message);
     }
 
-    public void debug(String strFormat, Object... args) {
+    public void debug(String strFormat, Object... args) throws Exception {
         String message = String.format(strFormat, args);
         logMessage(Level.DEBUG, message);
     }
 
-    public void info(String message) {
+    public void info(String message) throws Exception {
         logMessage(Level.INFO, message);
     }
 
-    public void info(String strFormat, Object... args) {
+    public void info(String strFormat, Object... args) throws Exception {
         String message = String.format(strFormat, args);
         logMessage(Level.INFO, message);
     }
 
-    public void warning(String message) {
+    public void warning(String message) throws Exception {
         logMessage(Level.WARNING, message);
     }
 
-    public void warning(String strFormat, Object... args) {
+    public void warning(String strFormat, Object... args) throws Exception {
         String message = String.format(strFormat, args);
         logMessage(Level.WARNING, message);
     }
 
-    public void error(String message) {
+    public void error(String message) throws Exception {
         logMessage(Level.ERROR, message);
     }
 
-    public void error(String strFormat, Object... args) {
+    public void error(String strFormat, Object... args) throws Exception {
         String message = String.format(strFormat, args);
         logMessage(Level.ERROR, message);
     }
 
-    private void logMessage(Level level, String message) {
+    private void logMessage(Level level, String message) throws Exception{
         //[WARNING] 2018.07.17 09:56:32 myLogger - something weird happened
         if (level != null && level.ordinal() >= this.level.ordinal()) {
-            DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss");
             Date date = new Date();
-            String log = String.format("[%s] %s %s - %s", level.toString(), dateFormat.format(date), name, message);
+            String log = String.format("[%s] %s %s - %s", level.toString(), DATE_FORMAT.format(date), name, message);
             for (MessageHandler handler : handlers) {
                 handler.sendMessage(log);
             }
