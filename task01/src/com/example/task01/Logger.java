@@ -4,7 +4,7 @@ import java.util.*;
 import java.text.*;
 
 public class Logger {
-    private String name;
+    final private String name;
     private Level level;
     private static Map<String, Logger> loggers = new HashMap<>();
 
@@ -17,7 +17,8 @@ public class Logger {
     }
 
     public static Logger getLogger(String name) {
-        return loggers.get(name) == null ? new Logger(name) : loggers.get(name);
+        Logger logger = loggers.get(name);
+        return logger == null ? new Logger(name) : logger;
     }
 
     public void log(Level level, String message) {
@@ -76,8 +77,10 @@ public class Logger {
         printLog(Level.ERROR, String.format(format, varargs));
     }
 
+    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss");
+
     private void printLog(Level level, String message) {
-        String dateStr = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss").format(new Date());
+        String dateStr = DATE_FORMAT.format(new Date());
         System.out.println(String.format("[%s] %s %s - %s", level, dateStr, name, message));
     }
 
