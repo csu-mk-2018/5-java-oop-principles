@@ -6,7 +6,7 @@ import java.text.*;
 public class Logger {
     final private String name;
     private Level level;
-    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss");
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss");
     private static Map<String, Logger> loggers = new HashMap<>();
 
     public enum Level {DEBUG, INFO, WARNING, ERROR}
