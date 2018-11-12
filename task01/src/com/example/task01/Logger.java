@@ -11,6 +11,8 @@ public class Logger {
 
     public enum Level { DEBUG, INFO, WARNING, ERROR}
 
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss");
+
     Logger(String name) {
         this.name = name;
         this.level = Level.DEBUG;
@@ -18,7 +20,11 @@ public class Logger {
     }
 
     public static Logger getLogger(String name) {
-        return loggers.get(name)==null ? new Logger(name) : loggers.get(name);
+        Logger logger = loggers.get(name);
+        if (logger == null) {
+            logger = new Logger(name);
+        }
+        return logger;
     }
 
     public void log(Level level, String message) {
@@ -68,7 +74,7 @@ public class Logger {
         printLog(Level.ERROR, String.format(format, varargs));
     }
     private void printLog(Level level, String message) {
-        String dateStr = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss").format(new Date());
+        String dateStr = DATE_FORMAT.format(new Date());
         System.out.println(String.format("[%s] %s %s - %s", level, dateStr, name, message));
     }
     private boolean checkLevel(Level level) {
