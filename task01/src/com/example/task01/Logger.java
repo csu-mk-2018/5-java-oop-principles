@@ -9,6 +9,7 @@ public class Logger {
     private final String name;
     private Level level;
     private static Map<String, Logger> loggers = new HashMap<String, Logger>();
+    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss");
 
     public enum Level {
         DEBUG,
@@ -19,12 +20,6 @@ public class Logger {
 
     private Logger(String name) {
         this.name = name;
-        loggers.put(this.name, this);
-    }
-
-    private Logger(String name, Level level) {
-        this.name = name;
-        this.level = level;
         loggers.put(this.name, this);
     }
 
@@ -89,9 +84,8 @@ public class Logger {
     public void logMessage(Level level, String message) {
         //[WARNING] 2018.07.17 09:56:32 myLogger - something weird happened
         if (level != null && level.ordinal() >= this.level.ordinal()) {
-            DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss");
             Date date = new Date();
-            String log = String.format("[%s] %s %s - %s", level.toString(), dateFormat.format(date), name, message);
+            String log = String.format("[%s] %s %s - %s", level.toString(), DATE_FORMAT.format(date), name, message);
             System.out.println(log);
         }
     }
