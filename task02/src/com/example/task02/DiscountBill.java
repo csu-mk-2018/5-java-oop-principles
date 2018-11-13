@@ -5,7 +5,7 @@ public class DiscountBill
 
     private int Discount;
 
-    public int GetDiscount() {
+    public int getDiscount() {
         return Discount;
     }
 
@@ -30,7 +30,7 @@ public class DiscountBill
 
     @Override
     public String toString() {
-        if (Discount == 0) {
+        if (Discount < 0) {
             return super.toString();
         }
         else {
