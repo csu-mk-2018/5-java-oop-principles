@@ -9,6 +9,7 @@ public class Logger {
 
     private final String Name;
     private Level level;
+    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss");
 
     public enum Level {
         DEBUG,
@@ -19,13 +20,14 @@ public class Logger {
 
     private static HashMap<String, Logger> loggers = new HashMap();
 
+
     public String getName() {
         return Name;
     }
 
     private Logger(String Name) {
         this.Name = Name;
-        this.level = Level.DEBUG;
+        loggers.put(Name, this);
     }
 
     public static Logger getLogger(String Name) {
@@ -36,68 +38,68 @@ public class Logger {
             return new Logger(Name);
     }
 
-    private void ShowMessage(Level level, String message) {
-        String dateStr = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss").format(new Date());
+    private void showMessage(Level level, String message) {
+        String dateStr = DATE_FORMAT.format(new Date());
         System.out.println(String.format("[%s] %s %s - %s", level, dateStr, Name, message));
     }
 
     public void debug(String message) {
         if (this.level.ordinal() <= Level.DEBUG.ordinal()) {
-            ShowMessage(Level.DEBUG, message);
+            showMessage(Level.DEBUG, message);
         }
     }
 
     public void debug(String format, Object... varargs) {
         if (this.level.ordinal() <= Level.DEBUG.ordinal()) {
-            ShowMessage(Level.DEBUG, String.format(format, varargs));
+            showMessage(Level.DEBUG, String.format(format, varargs));
         }
     }
 
     public void info(String message) {
         if (this.level.ordinal() <= Level.INFO.ordinal()) {
-            ShowMessage(Level.INFO, message);
+            showMessage(Level.INFO, message);
         }
     }
 
     public void info(String format, Object... varargs) {
         if (this.level.ordinal() <= Level.INFO.ordinal()) {
-            ShowMessage(Level.INFO, String.format(format, varargs));
+            showMessage(Level.INFO, String.format(format, varargs));
         }
     }
 
     public void warning(String message) {
         if (this.level.ordinal() <= Level.WARNING.ordinal()) {
-            ShowMessage(Level.WARNING, message);
+            showMessage(Level.WARNING, message);
         }
     }
 
     public void warning(String format, Object... varargs) {
         if (this.level.ordinal() <= Level.WARNING.ordinal()) {
-            ShowMessage(Level.WARNING, String.format(format, varargs));
+            showMessage(Level.WARNING, String.format(format, varargs));
         }
     }
 
     public void error(String message) {
         if (this.level.ordinal() <= Level.ERROR.ordinal()) {
-            ShowMessage(Level.ERROR, message);
+            showMessage(Level.ERROR, message);
         }
     }
 
     public void error(String format, Object... varargs) {
         if (this.level.ordinal() <= Level.ERROR.ordinal()) {
-            ShowMessage(Level.ERROR, String.format(format, varargs));
+            showMessage(Level.ERROR, String.format(format, varargs));
         }
     }
 
     public void log(Level level, String message) {
         if (this.level.ordinal() <= level.ordinal()) {
-            ShowMessage(level, message);
+            showMessage(level, message);
         }
     }
 
     public void log(Level level, String format, Object... varargs) {
         if (this.level.ordinal() <= level.ordinal()) {
-            ShowMessage(level, String.format(format, varargs));
+            showMessage(level, String.format(format, varargs));
         }
     }
 
