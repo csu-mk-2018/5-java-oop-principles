@@ -7,18 +7,20 @@ import java.time.format.DateTimeFormatter;
 
 public class RotationFileHandler implements MessageHandler {
 
-    private String puth;
-    private long currentTime;
+    private String path;
+    private int lastTimeMinutes;
     private int intervalInMin;
-    private boolean append = false;
-
+    private boolean append;
+    private FileWriter writer;
+    final private int NUMBER_MINUTES_IN_HOUR = 60;
     /**
      * Конструтор класса RotationFileHandler
      * @param interval интервал для вывода ссобщений в минутах
      */
     public RotationFileHandler(int interval) throws Exception {
+        if (interval < 1)
+            throw  new IllegalAccessException("Неверно задан интервал в минутах!");
         this.intervalInMin = interval;
-        this.currentTime = -1;
     }
 
     /**
@@ -26,26 +28,24 @@ public class RotationFileHandler implements MessageHandler {
      */
     public void sendMessage(String message) throws Exception {
         LocalDateTime now = LocalDateTime.now(); //Получаем текущее время
-        int currentTimePeriod = now.getMinute(); //Сохраняем минуты текущего сайта
+        int currentTimeMinutes = now.getMinute(); //Сохраняем минуты текущего часа
 
-        //Если было например, 59 минут, запомнили 59 минут, затем стало 0 минут, перезапываем
-        //данные, иначе условия больше не выполнятся
-        if(this.currentTime > currentTimePeriod)
-            this.currentTime = -1;
+        //По умолчанию выводим в текущий файл
+        this.append = false;
 
-        //Путь до файла, куда выводить сообщение в формате: log.2018.11.12.22.40
-        this.puth = String.format("log.%s", now.format(DateTimeFormatter.ofPattern("yyyy.MM.dd.HH.mm")));
-
-        //Если текущее локальное количество минут больше, чем предыдущее + interval
+        //Если текущее локальное количество минут больше, чем (предыдущее + interval) % 60
         //Ставим предыдущим - текущее количество минут, и меняем флаг для создания нового
-        //файла по вышеприведенному формату.
-        if (currentTimePeriod > this.currentTime + this.intervalInMin) {
-            this.currentTime = currentTimePeriod;
+        //файла по вышеприведенному формату
+        if (currentTimeMinutes >= (this.lastTimeMinutes + this.intervalInMin) % NUMBER_MINUTES_IN_HOUR) {
+            this.lastTimeMinutes = currentTimeMinutes;
+            //Путь до файла, куда выводить сообщение в формате: log.2018.11.12.22.40
+            this.path = String.format("log.%s", now.format(DateTimeFormatter.ofPattern("yyyy.MM.dd.HH.mm")));
             this.append = true;
         }
 
         //Вызываем метод записи, который в зависимости от флага append либо пишет в текущий файл
-        this.writerMessage(this.puth, message, append);
+        //либо создает новый
+        this.writerMessage(this.path, message, append);
     }
 
     /**
@@ -54,12 +54,9 @@ public class RotationFileHandler implements MessageHandler {
      * @param message выводимое сообщение
      * @param append флаг вывода. True  - в новый файл, false - в текущий файл
      */
-    private void writerMessage(String puth, String message, boolean append) {
-        try (FileWriter writer = new FileWriter(puth, append)) {
-            writer.write(message + "\n");
-            writer.flush();
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-        }
+    private void writerMessage(String puth, String message, boolean append) throws IOException {
+        this.writer = new FileWriter(puth, append);
+        writer.write(message + "\n");
+        writer.flush();
     }
 }

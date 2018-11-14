@@ -1,5 +1,7 @@
 package com.example.task04;
 
+import sun.rmi.runtime.Log;
+
 import java.time.LocalDateTime;
 
 
@@ -19,11 +21,13 @@ public class Task04Main {
 
         Logger logger3 = Logger.getLogger("INFOmessage");
         logger3.setLevel(Logger.Level.INFO);
-        logger3.setHandler(new RotationFileHandler(1));
+        logger3.setHandler(new RotationFileHandler(2));
         logger3.info("message");
 
-        logger3.setHandler(new FileHandler("filehandler.txt"));
-        logger3.info("testmessage");
+        Logger logger4 = Logger.getLogger("Info-File-message");
+        logger4.setLevel(Logger.Level.INFO);
+        logger4.setHandler(new FileHandler("test.txt"));
+        logger4.info("Print FileHandler");
 
         LocalDateTime now = LocalDateTime.now();
         int minute = now.getMinute();
