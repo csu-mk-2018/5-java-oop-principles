@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
 public class RotationFileHandler implements MessageHandler {
 
     private String path;
-    private int lastTimeMinutes;
+    private int lastTimeMinutes = -Integer.MAX_VALUE; //Изначально любое число < -60
     private int intervalInMin;
     private boolean append;
     private FileWriter writer;
