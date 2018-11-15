@@ -21,14 +21,13 @@ public class MemoryHandler implements MessageHandler {
 
     @Override
     public void printMessage(String message) {
-        if (bufCapacity - 1 == bufferedMessages.size()) {
+        bufferedMessages.add(message);
+        if (bufferedMessages.size() >= bufCapacity) {
             for (String msg : bufferedMessages) {
                 handler.printMessage(msg);
             }
             handler.printMessage(message);
             bufferedMessages.clear();
-        } else {
-            bufferedMessages.add(message);
         }
     }
 }

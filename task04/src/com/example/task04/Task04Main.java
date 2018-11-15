@@ -7,6 +7,9 @@ public class Task04Main {
         Logger logger = Logger.getLogger("log1", new ConsoleHandler());
         logger.log("message 1!!", ImportanceLevel.DEBUG);
 
+        Logger test11 = Logger.getLogger("testlog");
+        test11.debug("test with no handlers");
+
         logger.addHandler(new ConsoleHandler());
         logger.log("message 1!!", ImportanceLevel.DEBUG);
 

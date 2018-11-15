@@ -24,7 +24,7 @@ public class RotationFileHandler implements MessageHandler {
     public void printMessage(String message) {
         LocalDateTime date = LocalDateTime.now();
         date = date.truncatedTo(interval);
-        if (writer == null || !currentTime.equals(date)) {
+        if (!date.equals(currentTime)) {
             String curFileName = fileName + "_"
                     + date.format(DateTimeFormatter.ofPattern(filePattern));
             try {
@@ -37,6 +37,7 @@ public class RotationFileHandler implements MessageHandler {
                 writer = new FileWriter(curFileName);
                 currentTime = date;
             } catch (IOException e) {
+                System.out.println(e.toString());
                 return;
             }
         }
@@ -45,6 +46,7 @@ public class RotationFileHandler implements MessageHandler {
             writer.write(message);
             writer.flush();
         } catch (IOException e) {
+            System.out.println(e.toString());
             return;
         }
     }

@@ -48,8 +48,8 @@ public class Logger {
      * зависимости от его наличия в списке).
      *
      * @param name    имя логгера
-     * @param handler первый обработчик, добавляемый в новый логгер (если он будет создан, иначе добавляет обработчик в старый)
-     * @return логгер с заданным первым обработчиком и именем
+     * @param handler обработчик, добавляемый в логгер
+     * @return логгер с заданным обработчиком
      */
     public static Logger getLogger(String name, MessageHandler handler) {
         Logger logger = loggers.get(name);
