@@ -1,53 +1,62 @@
 package com.example.task02;
 
-/**
- * Счет к оплате c учётом скидки
- */
 public class DiscountBill extends Bill {
+    private int discount;
+
+    public DiscountBill(int sizeDiscount) {
+        setDiscount(discount);
+    }
 
     /**
-     * Скидка в процентах
+     * Подсчитывает общую сумму покупки с учетом скидки
+     *
+     * @return общую стоимость покупки c учетом скидки
      */
-    private int discount = 0;
+
+    @Override
+    public long getPrice() {
+        return super.getPrice() - getAbsoluteDiscount();
+    }
 
     /**
-     * Возвращает процент скидки
+     * Возвращает размер скидки в процентах
+     *
+     * @return размер скидки в процентах
      */
-    public int getDiscountPercent() {
+    public int getDiscount() {
         return discount;
     }
 
     /**
-     * Возвращает размер скидки в валюте
+     * Возвращает размер скидки в у.е.
+     *
+     * @return размер скидки в у.е.
      */
-    public long getDiscountValue() {
-        return super.getPrice() - this.getPrice();
+
+    public long getAbsoluteDiscount() {
+        return (long) (((double) discount / 100) * super.getPrice());
     }
 
     /**
-     * Устанавливает размер скидки в процентах
+     * устанавливает размер скидки в процентах
+     *
+     * @param discount размер скидки в параметрах
+     * @throws IllegalArgumentException невалидное значение скидки в процентах
      */
-    public void setDiscount(int discount) {
-        if (discount >= 0 && discount <= 100) {
-            this.discount = discount;
-        } else {
-            throw new AssertionError("Invalid discount.");
-        }
-    }
 
-    @Override
-    public long getPrice() {
-        long discountPrice = super.getPrice();
-        discountPrice *= (100 - discount);
-        return discountPrice / 100;
+    public void setDiscount(int discount) throws IllegalArgumentException {
+        if (discount < 0 || discount > 100) {
+            throw new IllegalArgumentException(String.format("Некорректное значение скидки %d", discount));
+        } else {
+            this.discount = discount;
+        }
     }
 
     @Override
     public String toString() {
-        if (discount == 0) {
-            return super.toString();
-        } else {
-            return super.toString() + " (с учётом скидки " + discount + "%)";
-        }
+        String result = super.toString();
+        result += " (скидос " + discount + "%)";
+        return result;
     }
+
 }
