@@ -13,7 +13,7 @@ public class Minutes implements TimeUnit {
 
     @Override
     public long toMillis() {
-        return amount * (1000 * 60);
+        return amount * 1000 * 60;
     }
 
     @Override
